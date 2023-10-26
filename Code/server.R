@@ -163,4 +163,30 @@ server <- function(input, output, session) {
                     locations = cells_column_spanners())
       })
       
+  output$treat <- render_gt({
+   
+    t0<- tbl_likert(data=df_lc5,include =  l1antiviral:l1antithrom) 
+    
+    t1<- tbl_likert(data=df_lc5 %>%  dplyr::filter(province =='Nakorn Phanom'),include =  l1antiviral:l1antithrom) 
+    
+    t2<- tbl_likert(data=df_lc5 %>%  dplyr::filter(province =='Tak'),include =   l1antiviral:l1antithrom)
+    
+    
+    n0 = nrow(df_lc3)
+    n1 = nrow(df_lc3 %>% filter(province == 'Nakorn Phanom'))
+    n2 = nrow(df_lc3 %>% filter(province == 'Tak'))
+    
+    
+   tbl_merge(list(t0, t1, t2),
+              tab_spanner = c(
+                paste0('All (N = ', n0, ')'),
+                paste0('Nakorn Phanom (N = ', n1, ')'),
+                paste0('Tak (N = ', n2, ')')
+              )) %>%
+      modify_column_indent(columns = label,rows=3:8) %>% 
+      as_gt() %>%
+      tab_style(style = cell_text(weight = "bold"),
+                locations = cells_column_spanners())
+  })
+  
 }

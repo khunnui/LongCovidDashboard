@@ -22,8 +22,8 @@ sidebar <- dashboardSidebar(
     menuItem("Severity", tabName = "severe"),
     menuItem("Complication", tabName = "complicate"),
     menuItem("Infections", tabName = "infect"),
-    menuItem("Treatments", tabName = "treat")
-    # menuItem("Risk Factors", tabName = "risk"),
+    menuItem("Treatments", tabName = "treat"),
+    menuItem("Depression", tabName = "depress")
     # menuItem("Vaccination", tabName = "vac"),
     # menuItem("ATK Used", tabName = "atk"),
     # menuItem("SARS-CoV-2 Detection", tabName = "detect"),

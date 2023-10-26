@@ -31,7 +31,7 @@ body <- dashboardBody(
   tabItems(
     tabItem(tabName = "patient",
             fluidRow(
-              box(title = "No. of Patients in each visit",
+              box(title = "No. of Patients in Each Visit",
                   width = 12,
                   gt_output("enroll"))
             )),
@@ -58,8 +58,15 @@ body <- dashboardBody(
             fluidRow(
               box(title = "Clinical Management during Acute COVID-19 Infection",
                   width = 12,
-                  gt_output("infect"))
+                  gt_output("treat"))
+          )),
+    tabItem(tabName = "depress",
+            fluidRow(
+              box(title = "Depression Severity",
+                  width = 12,
+                  gt_output("depress"))
             ))
+    
     
     
   ),
