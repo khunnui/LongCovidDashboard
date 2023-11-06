@@ -14,7 +14,8 @@ source('./function.R')
 #############
 githubURL <- "https://github.com/khunnui/CovidFeverData/raw/main/Data/CFDashboard.RData"
 load(url(githubURL))
-# load('C:/COVIDDashboard/CovidFeverData/Data/CFDashboard.RData')
+#load('C:/COVIDDashboard/CovidFeverData/Data/CFDashboard.RData')
+# load('C:/COVIDDashboard/CovidFeverData/Data/CFDashboardtest.RData')
 
 ##########
 # Colors #
@@ -36,3 +37,4 @@ color_posneg <- c('#b78f62','#a1caf1','#ebe6e5')
 color_atk    <- c('#b78f62','#ace1af','#ebe6e5')
 color_scale1 <- c('#81613c','#b78f62','#ebe6e5','#a1caf1','#1a67af')
 color_scale2 <- c('#e0edfa','#c0dcf6','#a1caf1','#5e99d0','#1a67af')
+color_scale3 <- c('#eeeeee','#c0dcf6','#a1caf1','#5e99d0','#1a67af')

@@ -23,10 +23,10 @@ sidebar <- dashboardSidebar(
     menuItem("Complication", tabName = "complicate"),
     menuItem("Infections", tabName = "infect"),
     menuItem("Treatments", tabName = "treat"),
-    menuItem("Depression", tabName = "depress")
-    # menuItem("Vaccination", tabName = "vac"),
-    # menuItem("ATK Used", tabName = "atk"),
-    # menuItem("SARS-CoV-2 Detection", tabName = "detect"),
+    menuItem("Depression", tabName = "depress"),
+    menuItem("F/U", tabName = "fu"),
+    menuItem("Reinfection", tabName = "reinfect"),
+    menuItem("Diagnosis", tabName = "diax")
     # menuItem("Laboratory", tabName = "lab"),
     # menuItem("Serology Testing", tabName = "sero"),
     # menuItem("KAP", tabName = "KAP")

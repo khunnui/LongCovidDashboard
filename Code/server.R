@@ -183,10 +183,75 @@ server <- function(input, output, session) {
                 paste0('Nakorn Phanom (N = ', n1, ')'),
                 paste0('Tak (N = ', n2, ')')
               )) %>%
-      modify_column_indent(columns = label,rows=3:8) %>% 
+     modify_column_indent(columns = label,
+                          rows = variable %in% c('l1avlop', 'l1avdar', 'l1avrem', 'l1avfav', 'l1avacy', 'l1avose', 'l1avpax', 'l1avmol')) %>%
       as_gt() %>%
       tab_style(style = cell_text(weight = "bold"),
                 locations = cells_column_spanners())
   })
   
+  
+  
+  output$depress <- renderPlotly({
+  plot_ly(
+    data = df_lc6 %>%
+      group_by(period, severe) %>%
+      summarise(count = sum(n)) %>% 
+      mutate(pct = count/sum(count)),
+    x = ~ period,
+    y = ~ pct,
+    type = "bar",
+    color = ~ severe,
+    colors = color_scale3,
+    hoverinfo = 'y'
+  ) %>% 
+    layout(barmode = 'stack',
+           bargap = 0.5)
+  })
+  
+  
+  
+  output$fu <- renderPlotly({
+    if (input$provx == 2) {
+      df <- df_lc21 %>% filter(province == "Nakorn Phanom")
+    } else if (input$provx == 3) {
+      df <- df_lc21 %>% filter(province == "Tak")
+    } else {
+      df <- df_lc21
+    }
+    plot_ly(
+      data = df  %>%
+        group_by(period, oipd) %>%
+        summarise(count = sum(n))  ,
+      x = ~ period,
+      y = ~ count,
+      type = "bar",
+      color = ~ oipd,
+     # colors = color_scale3,
+      hoverinfo = 'y'
+    )  
+   
+  }) 
+  
+  output$reinfect <- renderPlotly({
+    if (input$provrf == 2) {
+      df <- df_lc22 %>% filter(province == "Nakorn Phanom")
+    } else if (input$provrf == 3) {
+      df <- df_lc22 %>% filter(province == "Tak")
+    } else {
+      df <- df_lc22
+    }
+    plot_ly(
+      data = df  %>%
+        group_by(period, reinfect) %>%
+        summarise(count = sum(n))  ,
+      x = ~ period,
+      y = ~ count,
+      type = "bar",
+      color = ~ reinfect,
+      # colors = color_scale3,
+      hoverinfo = 'y'
+    )  
+  
+  }) 
 }

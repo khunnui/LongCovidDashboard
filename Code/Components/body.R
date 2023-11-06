@@ -64,8 +64,54 @@ body <- dashboardBody(
             fluidRow(
               box(title = "Depression Severity",
                   width = 12,
-                  gt_output("depress"))
+                  plotlyOutput("depress"))
+            )),
+    
+    tabItem(tabName = "fu",
+            fluidRow(
+              box(title = "No. of Follow up patients",
+                  width = 12,
+                  align="center",
+                  plotlyOutput("fu"),
+              radioButtons(
+                "provx",
+                label = "",
+                inline = TRUE,
+                choices = list("All" = 1, "Nakorn Phanom" = 2, "Tak" = 3), 
+                selected = 1
+              ))
+            )),
+    
+    tabItem(tabName = "reinfect",
+            fluidRow(
+              box(title = "Reinfection",
+                  width = 12,
+                  align="center",
+                  plotlyOutput("reinfect"),
+                  radioButtons(
+                    "provrf",
+                    label = "",
+                    inline = TRUE,
+                    choices = list("All" = 1, "Nakorn Phanom" = 2, "Tak" = 3), 
+                    selected = 1
+                  ))
+            )),
+    
+    tabItem(tabName = "rediax",
+            fluidRow(
+              box(title = "Diagnosis during OPD/IPD Visits",
+                  width = 12,
+                  align="center",
+                  plotlyOutput("rediax"),
+                  radioButtons(
+                    "oipd",
+                    label = "",
+                    inline = TRUE,
+                    choices = list("OPD" = 1, "IPD" = 2, "OPD+IPD" = 3), 
+                    selected = 1
+                  ))
             ))
+    
     
     
     
