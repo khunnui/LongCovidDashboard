@@ -39,7 +39,18 @@ server <- function(input, output, session) {
 
   #----------enroll - number of patient------------------------
   output$enroll <- render_gt({
-   
+    tbl_summary(data = df_lc1,
+                include = fu1:fu4,
+                by = period ) %>%
+      add_overall() %>%
+      modify_header(update = list(label = "",
+                                  all_stat_cols() ~ "**{level}**<br>N = {n}")) %>% 
+      as_gt() %>%
+      
+      tab_options(table.border.bottom.style = 'none') %>%
+      tab_style(style = cell_text(weight = "bold"),
+                locations = cells_column_spanners())
+    
   
     t0 <- tbl_summary(data = df_lc1,
                       include = fu1:fu4,
@@ -75,6 +86,52 @@ server <- function(input, output, session) {
       tab_style(style = cell_text(weight = "bold"),
                 locations = cells_column_spanners())
   })
+  
+  
+  
+    
+    output$enroll1 <- render_gt({
+      
+      tbl_summary(data = df_lc1,
+                  include = fu1:fu4,
+                  by = period,
+                  statistic = all_categorical() ~ "{n}<br>({p}%)") %>%
+        add_overall() %>%
+        modify_header(update = list(label = "",
+                                    all_stat_cols() ~ "**{level}**<br>N = {n}")) %>% 
+        
+        as_gt() %>%
+        gt::fmt_markdown(columns = everything()) %>% 
+        tab_options(table.border.bottom.style = 'none') %>%
+        tab_style(style = cell_text(weight = "bold"),
+                  locations = cells_column_spanners())
+    })
+    
+    
+    output$enroll2 <- render_gt({
+      tbl_strata(
+        data = df_lc1,
+        strata = province,
+        .tbl_fun =
+          ~ .x %>%
+          tbl_summary(include = fu1:fu4,
+                      by = period,
+                      statistic = all_categorical() ~ " {n}<br>({p}%) ") %>%
+          add_overall() %>%
+          modify_header(update = list(
+            label = "",
+            all_stat_cols() ~ "**{level}**<br>N = {n}"
+          ))
+      ) %>% 
+        as_gt() %>%
+        gt::fmt_markdown(columns = everything()) %>% 
+        tab_style(style = cell_text(weight = "bold"),
+                  locations = cells_column_spanners())
+    })
+    
+    
+      
+      
   #------------------------------------- 
   #severity
   #-------------------------------------
@@ -83,12 +140,13 @@ server <- function(input, output, session) {
    
    tbl_summary(data = df_lc2,
                       include = l1severegrade,
-                      by = province     ) %>%
+                      by = province ,
+               statistic = all_categorical() ~ " {n}<br>({p}%) ") %>%
       add_overall() %>%
       modify_header(update = list(label = "",
                                   all_stat_cols() ~ "**{level}**<br>N = {n}")) %>% 
       as_gt() %>%
-      
+      gt::fmt_markdown(columns = everything()) %>% 
       tab_options(table.border.bottom.style = 'none') %>%
       tab_style(style = cell_text(weight = "bold"),
                 locations = cells_column_spanners())
@@ -101,11 +159,11 @@ server <- function(input, output, session) {
   
   output$complicate <- render_gt({
    
-   t0<- tbl_likert(data=df_lc3,include = l1cshock:l1csid) 
+   t0<- tbl_likert(data=df_lc3,include = l1cshock:l1csid,  statistic = "{n}<br>({p}%)") 
       
-   t1<- tbl_likert(data=df_lc3 %>%  dplyr::filter(province =='Nakorn Phanom'),include = l1cshock:l1csid) 
+   t1<- tbl_likert(data=df_lc3 %>%  dplyr::filter(province =='Nakorn Phanom'),include = l1cshock:l1csid,  statistic = "{n}<br>({p}%)") 
     
-   t2<- tbl_likert(data=df_lc3 %>%  dplyr::filter(province =='Tak'),include = l1cshock:l1csid)
+   t2<- tbl_likert(data=df_lc3 %>%  dplyr::filter(province =='Tak'),include = l1cshock:l1csid,  statistic = "{n}<br>({p}%)")
    
   
    n0 = nrow(df_lc3)
@@ -115,11 +173,15 @@ server <- function(input, output, session) {
    
    tbl_merge(list(t0, t1, t2),
              tab_spanner = c(
-               paste0('All (N = ', n0, ')'),
+               paste0('Overall (N = ', n0, ')'),
                paste0('Nakorn Phanom (N = ', n1, ')'),
                paste0('Tak (N = ', n2, ')')
              )) %>%
+     modify_header(update = list(label = "**Complications**",
+                                 all_stat_cols() ~ "**{level}**<br>N = {n}")) %>%
+    
      as_gt() %>%
+     gt::fmt_markdown(columns = everything()) %>% 
      tab_style(style = cell_text(weight = "bold"),
                locations = cells_column_spanners())
   })
@@ -132,19 +194,11 @@ server <- function(input, output, session) {
   
   output$infect <- render_gt({
     
-      # tbl_summary(data = df_lc4,
-      #                 include = l1inuri:l1mucormycosis,
-      #                 by = province, missing = 'no',type = l1inuri :l1mucormycosis  ~ "categorical") %>%
-      # add_overall() %>%
-      # modify_header(update = list(label = "",
-      #                             all_stat_cols() ~ "**{level}**<br>N = {n}")) %>% 
-      # 
+        t0<- tbl_likert(data=df_lc4,include =  l1inuri:l1mucormycosis,  statistic = "{n}<br>({p}%)") 
         
-        t0<- tbl_likert(data=df_lc4,include =  l1inuri:l1mucormycosis) 
+        t1<- tbl_likert(data=df_lc4 %>%  dplyr::filter(province =='Nakorn Phanom'),  statistic = "{n}<br>({p}%)",include = l1inuri:l1mucormycosis) 
         
-        t1<- tbl_likert(data=df_lc4 %>%  dplyr::filter(province =='Nakorn Phanom'),include = l1inuri:l1mucormycosis) 
-        
-        t2<- tbl_likert(data=df_lc4 %>%  dplyr::filter(province =='Tak'),include =  l1inuri:l1mucormycosis)
+        t2<- tbl_likert(data=df_lc4 %>%  dplyr::filter(province =='Tak'),  statistic = "{n}<br>({p}%)",include =  l1inuri:l1mucormycosis)
         
         
         n0 = nrow(df_lc3)
@@ -154,22 +208,26 @@ server <- function(input, output, session) {
         
         tbl_merge(list(t0, t1, t2),
                   tab_spanner = c(
-                    paste0('All (N = ', n0, ')'),
+                    paste0('Overall (N = ', n0, ')'),
                     paste0('Nakorn Phanom (N = ', n1, ')'),
                     paste0('Tak (N = ', n2, ')')
                   )) %>%
+          modify_header(update = list(label = "**Infection Diagnosis**",
+                                      all_stat_cols() ~ "**{level}**<br>N = {n}")) %>%
+          
           as_gt() %>%
+          gt::fmt_markdown(columns = everything()) %>% 
           tab_style(style = cell_text(weight = "bold"),
                     locations = cells_column_spanners())
       })
       
   output$treat <- render_gt({
    
-    t0<- tbl_likert(data=df_lc5,include =  l1antiviral:l1antithrom) 
+    t0<- tbl_likert(data=df_lc5,include =  l1antiviral:l1antithrom,  statistic = "{n}<br>({p}%)") 
     
-    t1<- tbl_likert(data=df_lc5 %>%  dplyr::filter(province =='Nakorn Phanom'),include =  l1antiviral:l1antithrom) 
+    t1<- tbl_likert(data=df_lc5 %>%  dplyr::filter(province =='Nakorn Phanom'),  statistic = "{n}<br>({p}%)",include =  l1antiviral:l1antithrom) 
     
-    t2<- tbl_likert(data=df_lc5 %>%  dplyr::filter(province =='Tak'),include =   l1antiviral:l1antithrom)
+    t2<- tbl_likert(data=df_lc5 %>%  dplyr::filter(province =='Tak'),  statistic = "{n}<br>({p}%)",include =   l1antiviral:l1antithrom)
     
     
     n0 = nrow(df_lc3)
@@ -179,13 +237,17 @@ server <- function(input, output, session) {
     
    tbl_merge(list(t0, t1, t2),
               tab_spanner = c(
-                paste0('All (N = ', n0, ')'),
+                paste0('Overall (N = ', n0, ')'),
                 paste0('Nakorn Phanom (N = ', n1, ')'),
                 paste0('Tak (N = ', n2, ')')
               )) %>%
      modify_column_indent(columns = label,
                           rows = variable %in% c('l1avlop', 'l1avdar', 'l1avrem', 'l1avfav', 'l1avacy', 'l1avose', 'l1avpax', 'l1avmol')) %>%
-      as_gt() %>%
+     modify_header(update = list(label = "**Treatment Received**",
+                                 all_stat_cols() ~ "**{level}**<br>N = {n}")) %>%
+     
+     as_gt() %>%
+     gt::fmt_markdown(columns = everything()) %>% 
       tab_style(style = cell_text(weight = "bold"),
                 locations = cells_column_spanners())
   })
@@ -229,7 +291,9 @@ server <- function(input, output, session) {
       color = ~ oipd,
      # colors = color_scale3,
       hoverinfo = 'y'
-    )  
+    )  %>% 
+      layout(title = '', plot_bgcolor = "#e5ecf6", xaxis = list(title = 'Period'), 
+             yaxis = list(title = 'Cumulative # hospital visit'))
    
   }) 
   
@@ -251,7 +315,10 @@ server <- function(input, output, session) {
       color = ~ reinfect,
       # colors = color_scale3,
       hoverinfo = 'y'
-    )  
+    )  %>% 
+      layout(title = '', plot_bgcolor = "#e5ecf6", xaxis = list(title = 'Period'), 
+             yaxis = list(title = 'Cumulative # hospital visit'))
+    
   
   }) 
 }

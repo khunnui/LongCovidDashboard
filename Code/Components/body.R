@@ -28,19 +28,102 @@ body <- dashboardBody(
       {$("header").find("nav").append(\'<div id="dateHeader" class="myClass"></div>\');})'
     )
   ),
+  
+  
   tabItems(
+    tabItem(
+      tabName = "overview",
+      fluidRow(
+        # style = "margin-top: -5px; margin-bottom: -20px; margin-left: -20px; margin-right: -20px;",
+        box(
+          title = HTML("Prospective Study of Long COVID Symptoms Among Patients with COVID-19 Identified from COVID Fever Project"),
+          width = 12,
+          div(
+            style = "text-align: center; font-size: 20px",
+            h4("Objectives")
+          ),
+          HTML("<ul>
+                  <li>To describe the proportion of patients with post-COVID conditions. </li>
+                  <li>To better understand the most frequent symptoms and diagnoses experienced by patients with post-COVID conditions.</li>
+                 </ul>"
+          )
+        ),
+        box(
+          title = "Project summary",
+          width = 12,
+          div(
+            style = "text-align: left; font-size: 20px; font-weight: bold",
+              ),
+          HTML("<ul>
+                  <li>Patients with SARS-CoV-2 RT-PCR positive identified from COVID Fever study were interviewed for health status, hospital visit after acute illness, ability to self-care and clinical characteristics related to COVID-19 every 3 months until the completion of the 1-year follow-up period. Demographic, clinical presentation, laboratory, diagnoses, treatment information were collected from medical records and hospital databases. In addition, vaccination history and reinfection with SARS-CoV-2 will also be collected. We expected to include approximately 150 COVID-19 patients identified from hospitals in Nakhon Phanom (3 hospitals) and Tak (1 hospital) during October 2022 – May 2023. </li>
+                  
+                </ul>"
+          )
+          
+        )
+        
+      )
+    ),
+    
     tabItem(tabName = "patient",
             fluidRow(
-              box(title = "No. of Patients in Each Visit",
+              box(title = "COVID-19 Patients Under Follow-up by Enrollment Date (N=911)",
                   width = 12,
-                  gt_output("enroll"))
-            )),
+                  gt_output("enroll1"))
+            ),
+            fluidRow(
+              box(title = "COVID-19 Patients Under Follow-up by Enrollment Date and Provinces",
+                  width = 12,
+                  gt_output("enroll2"))
+            )
+            
+            ),
     
     tabItem(tabName = "severe",
             fluidRow(
-              box(title = "Severity of Acute Infection",
+              box(title = "Level of Clinical Severity during Acute COVID-19 Infection",
                   width = 12,
-                  gt_output("severe"))
+                  gt_output("severe")),
+              box(
+                title = "Project summary",
+                width = 12,
+                div(
+                  style = "text-align: left; font-size: 20px; font-weight: bold",
+                ),
+                HTML("<table border=1>
+    <thead>
+        <tr style='vertical-align:top'>
+            <th>Clinical Classification</th>
+            <th>Based on available clinical records among hospitalized patients</th>
+            <th>Based on self-report, if patient was quarantined at home or community isolation</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td bgcolor = 'CCFFCC'>Mild</td>
+            <td bgcolor = 'CCFFCC'>Present with a variety of signs and symptoms e.g., fever, cough, sore throat, malaise, headache, muscle pain, nausea, vomiting, diarrhea, loss of taste and smell, but No shortness of breath, dyspnea on exertion, or abnormal imaging. No hypoxia or pneumonia</td>
+            <td bgcolor = 'CCFFCC'>Did not receive oxygen</td>
+        </tr>
+        <tr>
+            <td bgcolor = '99FFCC'>Moderate</td>
+            <td bgcolor = '99FFCC'>Clinical signs of lower respiratory disease during clinical assessment or imaging, with SpO2 ≥94% on room air</td>
+            <td bgcolor = '99FFCC'>Did not receive oxygen</td>
+        </tr>
+        <tr>
+            <td bgcolor = '66FFB2'>Severe</td>
+            <td bgcolor = '66FFB2'>Individuals who have SpO2 &lt;94% on room air at sea level, a ratio of arterial partial pressure of oxygen to fraction of inspired oxygen (PaO2/FiO2) &lt;300 mm Hg, a respiratory rate &gt;30 breaths/min, or lung infiltrates &gt;50%</td>
+            <td bgcolor = '66FFB2'>Received oxygen<br>(or told you they needed it, but it was not available)</td>
+        </tr>
+        <tr>
+            <td bgcolor = '33FF99'>Critical</td>
+            <td bgcolor = '33FF99'>Individuals who have respiratory failure, septic shock, and/or multiple organ dysfunction OR Multi-Inflammatory Syndrome in Children (MISC) and adolescents temporally related to COVID-19</td>
+            <td bgcolor = '33FF99'>Received invasive ventilation (or max available respiratory support)</td>
+        </tr>
+    </tbody>
+</table>"
+                )
+                
+              )
             )),
     tabItem(tabName = "complicate",
             fluidRow(
@@ -62,14 +145,14 @@ body <- dashboardBody(
           )),
     tabItem(tabName = "depress",
             fluidRow(
-              box(title = "Depression Severity",
+              box(title = "Depression Severity at Baseline and Follow-up (N= 911)",
                   width = 12,
                   plotlyOutput("depress"))
             )),
     
     tabItem(tabName = "fu",
             fluidRow(
-              box(title = "No. of Follow up patients",
+              box(title = "Cumulative Number Hospital Visit during Follow-up Period",
                   width = 12,
                   align="center",
                   plotlyOutput("fu"),
@@ -84,7 +167,7 @@ body <- dashboardBody(
     
     tabItem(tabName = "reinfect",
             fluidRow(
-              box(title = "Reinfection",
+              box(title = "Patient with PCR or ATK Positive after Acute Infection",
                   width = 12,
                   align="center",
                   plotlyOutput("reinfect"),

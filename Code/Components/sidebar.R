@@ -17,14 +17,14 @@ sidebar <- dashboardSidebar(
     )
   ),
   sidebarMenu(
-    # menuItem("Overview", tabName = "overview"),
-    menuItem("No. of Patients", tabName = "patient"),
+    menuItem("Overview", tabName = "overview"),
+    menuItem("Patients under Follow-up", tabName = "patient"),
     menuItem("Severity", tabName = "severe"),
     menuItem("Complication", tabName = "complicate"),
     menuItem("Infections", tabName = "infect"),
     menuItem("Treatments", tabName = "treat"),
     menuItem("Depression", tabName = "depress"),
-    menuItem("F/U", tabName = "fu"),
+    menuItem("Hospital Visits", tabName = "fu"),
     menuItem("Reinfection", tabName = "reinfect"),
     menuItem("Diagnosis", tabName = "diax")
     # menuItem("Laboratory", tabName = "lab"),
