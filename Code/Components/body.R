@@ -85,7 +85,7 @@ body <- dashboardBody(
                   width = 12,
                   gt_output("severe")),
               box(
-                title = "Project summary",
+                title = "",
                 width = 12,
                 div(
                   style = "text-align: left; font-size: 20px; font-weight: bold",
