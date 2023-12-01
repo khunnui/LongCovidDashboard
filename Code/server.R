@@ -259,16 +259,19 @@ server <- function(input, output, session) {
     data = df_lc6 %>%
       group_by(period, severe) %>%
       summarise(count = sum(n)) %>% 
-      mutate(pct = count/sum(count)),
+      mutate(pct = count/sum(count)*100),
     x = ~ period,
     y = ~ pct,
     type = "bar",
     color = ~ severe,
-    colors = color_scale3,
+  #  colors = color_scale3,
     hoverinfo = 'y'
   ) %>% 
-    layout(barmode = 'stack',
-           bargap = 0.5)
+      layout(title = '', plot_bgcolor = "#e5ecf6", xaxis = list(title = 'Period'), 
+             yaxis = list(title = 'Percentage'))
+    
+    # layout(barmode = 'stack',
+    #        bargap = 0.5)
   })
   
   
@@ -305,19 +308,31 @@ server <- function(input, output, session) {
     } else {
       df <- df_lc22
     }
+    n1 <- sum(filter(df,period == 1)$n,na.rm=TRUE)
+    n2 <- sum(filter(df,period == 2)$n,na.rm=TRUE)
+    n3 <- sum(filter(df,period == 3)$n,na.rm=TRUE)
+    n4 <- sum(filter(df,period == 4)$n,na.rm=TRUE)
+    df <- df %>%
+      mutate(period = factor(period, levels = 1:4 ,labels = c(
+        paste0('Period 1 (n=', n1, ')'),
+        paste0('Period 2 (n=', n2, ')'),
+        paste0('Period 3 (n=', n3, ')'),
+        paste0('Period 4 (n=', n4, ')')
+      )))
     plot_ly(
       data = df  %>%
         group_by(period, reinfect) %>%
-        summarise(count = sum(n))  ,
+        summarise(count = sum(n))   %>% 
+        mutate(pct = count/sum(count)*100),
       x = ~ period,
-      y = ~ count,
+      y = ~ pct,
       type = "bar",
       color = ~ reinfect,
       # colors = color_scale3,
       hoverinfo = 'y'
     )  %>% 
       layout(title = '', plot_bgcolor = "#e5ecf6", xaxis = list(title = 'Period'), 
-             yaxis = list(title = 'Cumulative # hospital visit'))
+             yaxis = list(title = 'Percentage'))
     
   
   }) 
