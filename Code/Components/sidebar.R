@@ -26,7 +26,7 @@ sidebar <- dashboardSidebar(
     menuItem("Depression", tabName = "depress"),
     menuItem("Hospital Visits", tabName = "fu"),
     menuItem("Reinfection", tabName = "reinfect"),
-    menuItem("Diagnosis", tabName = "diax")
+    menuItem("Diagnosis", tabName = "rediax")
     # menuItem("Laboratory", tabName = "lab"),
     # menuItem("Serology Testing", tabName = "sero"),
     # menuItem("KAP", tabName = "KAP")

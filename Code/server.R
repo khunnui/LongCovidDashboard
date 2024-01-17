@@ -336,4 +336,32 @@ server <- function(input, output, session) {
     
   
   }) 
+  
+  output$rediax1 <- renderPlotly({
+    if (input$provdx == 2) {
+      df <- df_lc3dx %>% filter(province == "Nakorn Phanom")
+    } else if (input$provdx == 3) {
+      df <- df_lc3dx %>% filter(province == "Tak")
+    } else {
+      df <- df_lc3dx  
+    }
+  
+    plot_ly(
+        data = df %>%
+        group_by(period, Diagnosis) %>%
+        summarise(count = sum(y)),
+      y = ~ count,
+      x = ~ Diagnosis,
+      type = "bar"
+      
+      # color = ~ reinfect,
+      
+      # colors = color_scale3,
+      
+      # hoverinfo = 'y'
+      
+    )  
+    
+  }) 
+  
 }

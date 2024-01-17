@@ -185,12 +185,12 @@ body <- dashboardBody(
               box(title = "Diagnosis during OPD/IPD Visits",
                   width = 12,
                   align="center",
-                  plotlyOutput("rediax"),
+                  plotlyOutput("rediax1"),
                   radioButtons(
-                    "oipd",
+                    "provdx",
                     label = "",
                     inline = TRUE,
-                    choices = list("OPD" = 1, "IPD" = 2, "OPD+IPD" = 3), 
+                    choices = list("All" = 1, "Nakorn Phanom" = 2, "Tak" = 3), 
                     selected = 1
                   ))
             ))
