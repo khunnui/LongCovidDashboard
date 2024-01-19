@@ -355,7 +355,10 @@ server <- function(input, output, session) {
       type = "bar",
       color = ~ Diagnosis,
       hoverinfo = 'y'
-    )
+    )%>% 
+      layout(title = '', plot_bgcolor = "", xaxis = list(title = 'Period'), 
+             yaxis = list(title = 'Count'))
+    
     
    
     
