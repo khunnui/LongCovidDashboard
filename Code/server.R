@@ -347,20 +347,17 @@ server <- function(input, output, session) {
     }
   
     plot_ly(
-        data = df %>%
+      data = df %>%
         group_by(period, Diagnosis) %>%
         summarise(count = sum(y)),
       y = ~ count,
-      x = ~ Diagnosis,
-      type = "bar"
-      
-      # color = ~ reinfect,
-      
-      # colors = color_scale3,
-      
-      # hoverinfo = 'y'
-      
-    )  
+      x = ~ period,
+      type = "bar",
+      color = ~ Diagnosis,
+      hoverinfo = 'y'
+    )
+    
+   
     
   }) 
   
