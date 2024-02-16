@@ -55,8 +55,9 @@ body <- dashboardBody(
             style = "text-align: left; font-size: 20px; font-weight: bold",
               ),
           HTML("<ul>
-                  <li>Patients with SARS-CoV-2 RT-PCR positive identified from COVID Fever study were interviewed for health status, hospital visit after acute illness, ability to self-care and clinical characteristics related to COVID-19 every 3 months until the completion of the 1-year follow-up period. Demographic, clinical presentation, laboratory, diagnoses, treatment information were collected from medical records and hospital databases. In addition, vaccination history and reinfection with SARS-CoV-2 will also be collected. We expected to include approximately 150 COVID-19 patients identified from hospitals in Nakhon Phanom (3 hospitals) and Tak (1 hospital) during October 2022 – May 2023. </li>
-                  
+                  <li>Patients with SARS-CoV-2 RT-PCR positive identified from COVID Fever study in Nakhon Phanom and Tak during October 2022 – May 2023 were interviewed for health status, hospital visit after acute illness, ability to self-care and clinical characteristics related to COVID-19.  </li>
+                  <li>Demographic, clinical presentation, laboratory, diagnoses, treatment information, vaccination history and reinfection with SARS-CoV-2 were collected from medical records and hospital databases. </li>
+                  <li>Patient interview and medical record review were conducted every 3 months until the completion of the 1-year follow-up period.</li>
                 </ul>"
           )
           
@@ -145,14 +146,21 @@ body <- dashboardBody(
           )),
     tabItem(tabName = "depress",
             fluidRow(
-              box(title = "Depression Severity at Baseline and Follow-up (N= 911)",
+              box(title = "Depression Severity at Baseline and Follow-up (All patients in each period)",
                   width = 12,
                   plotlyOutput("depress"))
-            )),
+            )
+            ,
+            fluidRow(
+              box(title = "Depression Severity at Baseline and Follow-up (Based on baseline patients)",
+                  width = 12,
+                  plotlyOutput("depress2"))
+            )
+            ),
     
     tabItem(tabName = "fu",
             fluidRow(
-              box(title = "Cumulative Number Hospital Visit during Follow-up Period",
+              box(title = "Number Hospital Visit during Follow-up Period",
                   width = 12,
                   align="center",
                   plotlyOutput("fu"),
@@ -161,6 +169,13 @@ body <- dashboardBody(
                 label = "",
                 inline = TRUE,
                 choices = list("All" = 1, "Nakorn Phanom" = 2, "Tak" = 3), 
+                selected = 1
+              ),
+              radioButtons(
+                "compx",
+                label = "",
+                inline = TRUE,
+                choices = list("All" = 1, "Completed F/U" = 2), 
                 selected = 1
               ))
             )),
@@ -177,6 +192,13 @@ body <- dashboardBody(
                     inline = TRUE,
                     choices = list("All" = 1, "Nakorn Phanom" = 2, "Tak" = 3), 
                     selected = 1
+                  ),
+                  radioButtons(
+                    "comprf",
+                    label = "",
+                    inline = TRUE,
+                    choices = list("All" = 1, "Completed F/U" = 2), 
+                    selected = 1
                   ))
             )),
     
@@ -191,6 +213,13 @@ body <- dashboardBody(
                     label = "",
                     inline = TRUE,
                     choices = list("All" = 1, "Nakorn Phanom" = 2, "Tak" = 3), 
+                    selected = 1
+                  ),
+                  radioButtons(
+                    "compdx",
+                    label = "",
+                    inline = TRUE,
+                    choices = list("All" = 1, "Completed F/U" = 2), 
                     selected = 1
                   ))
             ))

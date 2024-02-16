@@ -9,7 +9,7 @@ library(DT)
 library(svglite)
 library(gtsummary)
 library(bstfun)
-
+library(dplyr)
 
 
 # library(cowplot)
@@ -221,6 +221,10 @@ server <- function(input, output, session) {
                     locations = cells_column_spanners())
       })
       
+    
+    #------------------------------------- 
+    # Treatments
+    #-------------------------------------
   output$treat <- render_gt({
    
     t0<- tbl_likert(data=df_lc5,include =  l1antiviral:l1antithrom,  statistic = "{n}<br>({p}%)") 
@@ -252,14 +256,19 @@ server <- function(input, output, session) {
                 locations = cells_column_spanners())
   })
   
-  
+    
+    #------------------------------------- 
+    # Depression
+    #-------------------------------------
   
   output$depress <- renderPlotly({
   plot_ly(
     data = df_lc6 %>%
       group_by(period, severe) %>%
-      summarise(count = sum(n)) %>% 
-      mutate(pct = count/sum(count)*100),
+      summarise(count = sum(n))%>%
+      mutate(pct = count/sum(count)*100 ) %>% 
+      mutate(pct = case_when(pct > 10  ~ round(pct,0),
+                             pct < 10  ~ round(pct,1))),
     x = ~ period,
     y = ~ pct,
     type = "bar",
@@ -273,9 +282,34 @@ server <- function(input, output, session) {
     # layout(barmode = 'stack',
     #        bargap = 0.5)
   })
+    
+    output$depress2 <- renderPlotly({
+      plot_ly(
+        data = df_lc62 %>%
+          group_by(period, severe) %>%
+          summarise(count = sum(n))%>%
+          mutate(pct = count/sum(count)*100 ) %>% 
+          mutate(pct = case_when(pct > 10  ~ round(pct,0),
+                                 pct < 10  ~ round(pct,1))),
+        x = ~ period,
+        y = ~ pct,
+        type = "bar",
+        color = ~ severe,
+        #  colors = color_scale3,
+        hoverinfo = 'y'
+      ) %>% 
+        layout(title = '', plot_bgcolor = "#e5ecf6", xaxis = list(title = 'Period'), 
+               yaxis = list(title = 'Percentage'))
+      
+      # layout(barmode = 'stack',
+      #        bargap = 0.5)
+    })
   
   
-  
+    
+    #------------------------------------- 
+    # Hospital visit
+    #------------------------------------- 
   output$fu <- renderPlotly({
     if (input$provx == 2) {
       df <- df_lc21 %>% filter(province == "Nakorn Phanom")
@@ -283,6 +317,11 @@ server <- function(input, output, session) {
       df <- df_lc21 %>% filter(province == "Tak")
     } else {
       df <- df_lc21
+    }
+    if (input$compx == 2) {
+      df <- df %>% filter(completefu == 1)
+    } else {
+      df <- df
     }
     plot_ly(
       data = df  %>%
@@ -296,10 +335,14 @@ server <- function(input, output, session) {
       hoverinfo = 'y'
     )  %>% 
       layout(title = '', plot_bgcolor = "#e5ecf6", xaxis = list(title = 'Period'), 
-             yaxis = list(title = 'Cumulative # hospital visit'))
+             yaxis = list(title = 'No. of patients'))
    
   }) 
   
+    
+    #------------------------------------- 
+    # Reinfections
+    #-------------------------------------
   output$reinfect <- renderPlotly({
     if (input$provrf == 2) {
       df <- df_lc22 %>% filter(province == "Nakorn Phanom")
@@ -307,6 +350,11 @@ server <- function(input, output, session) {
       df <- df_lc22 %>% filter(province == "Tak")
     } else {
       df <- df_lc22
+    }
+    if (input$comprf == 2) {
+      df <- df %>% filter(completefu == 1)
+    } else {
+      df <- df
     }
     n1 <- sum(filter(df,period == 1)$n,na.rm=TRUE)
     n2 <- sum(filter(df,period == 2)$n,na.rm=TRUE)
@@ -323,7 +371,9 @@ server <- function(input, output, session) {
       data = df  %>%
         group_by(period, reinfect) %>%
         summarise(count = sum(n))   %>% 
-        mutate(pct = count/sum(count)*100),
+        mutate(pct = count/sum(count)*100)       %>% 
+        mutate(pct = case_when(pct > 10  ~ round(pct,0),
+                               pct < 10  ~ round(pct,1))),
       x = ~ period,
       y = ~ pct,
       type = "bar",
@@ -332,11 +382,15 @@ server <- function(input, output, session) {
       hoverinfo = 'y'
     )  %>% 
       layout(title = '', plot_bgcolor = "#e5ecf6", xaxis = list(title = 'Period'), 
-             yaxis = list(title = 'Percentage'))
+             yaxis = list(title = 'Percentage' ))
     
   
   }) 
   
+    
+    #------------------------------------- 
+    # Diagnosis
+    #-------------------------------------
   output$rediax1 <- renderPlotly({
     if (input$provdx == 2) {
       df <- df_lc3dx %>% filter(province == "Nakorn Phanom")
@@ -345,7 +399,12 @@ server <- function(input, output, session) {
     } else {
       df <- df_lc3dx  
     }
-  
+    
+    if (input$compdx == 2) {
+      df <- df %>% filter(completefu == 1)
+    } else {
+      df <- df
+    }
     plot_ly(
       data = df %>%
         group_by(period, Diagnosis) %>%
