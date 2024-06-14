@@ -68,7 +68,7 @@ body <- dashboardBody(
     
     tabItem(tabName = "patient",
             fluidRow(
-              box(title = "COVID-19 Patients Under Follow-up by Enrollment Date (N=911)",
+              box(title = "COVID-19 Patients Under Follow-up by Enrollment Date (N=910)",
                   width = 12,
                   gt_output("enroll1"))
             ),
