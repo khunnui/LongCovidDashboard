@@ -143,7 +143,7 @@ server <- function(input, output, session) {
                       by = province ,
                statistic = all_categorical() ~ " {n}<br>({p}%) ") %>%
       add_overall() %>%
-      modify_header(update = list(label = "",
+      modify_header(update = list(label = "**Severity**",
                                   all_stat_cols() ~ "**{level}**<br>N = {n}")) %>% 
       as_gt() %>%
       gt::fmt_markdown(columns = everything()) %>% 
